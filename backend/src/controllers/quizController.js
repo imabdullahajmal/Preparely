@@ -109,4 +109,5 @@ export async function getQuiz(req, res){
   const quiz = await Quiz.findById(id);
   if(!quiz) return res.status(404).json({ error: 'not found' });
   res.json({ ok: true, quiz });
+  
 }
