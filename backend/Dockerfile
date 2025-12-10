@@ -16,7 +16,6 @@ ENV NODE_ENV=production
 # Copy node_modules from builder
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/src ./src
-COPY --from=builder /app/.env.example ./
 
 EXPOSE 4000
 CMD ["node", "src/server.js"]
