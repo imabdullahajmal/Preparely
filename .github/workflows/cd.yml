@@ -57,35 +57,3 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/preparely-frontend:latest
             ghcr.io/${{ github.repository_owner }}/preparely-frontend:${{ github.sha }}
-
-    deploy:
-      name: Deploy to remote server
-      runs-on: ubuntu-latest
-      needs: build-and-push
-      if: github.ref == 'refs/heads/main'
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-
-        - name: Create .env file
-          run: |
-            cat > .env <<'EOF'
-            MONGODB_URI=${{ secrets.MONGODB_URI }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-            PORT=${{ secrets.PORT || '4000' }}
-            EOF
-
-        - name: Setup SSH agent
-          uses: webfactory/ssh-agent@v0.8.1
-          with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-        - name: Copy docker-compose and env to server
-          run: |
-            scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
-            scp -o StrictHostKeyChecking=no .env ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/.env
-
-        - name: Run deployment on server
-          run: |
-            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.DEPLOY_PATH }} && docker compose pull || true && docker compose up -d --build"
