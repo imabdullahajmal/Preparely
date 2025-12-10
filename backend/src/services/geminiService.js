@@ -34,7 +34,8 @@ export async function generateQuizFromGemini({ topic, difficulty, numQuestions }
   // instantiate client
   const ai = new GoogleGenAI({ apiKey: KEY });
 
-  const prompt = `Generate a quiz on topic: ${topic} with difficulty: ${difficulty || 'medium'} containing ${numQuestions} multiple-choice questions. Respond ONLY with JSON with keys: topic, difficulty, questions where each question has prompt and choices array with text and correct boolean. No additional text.`;
+  const prompt = `Generate a quiz on topic: ${topic} with difficulty: ${difficulty || 'medium'} containing ${numQuestions} multiple-choice questions.
+   Respond ONLY with JSON with keys: topic, difficulty, questions where each question has prompt and choices array with text and correct boolean. No additional text.`;
 
   const res = await ai.models.generateContent({
     model: 'gemini-2.5-flash',

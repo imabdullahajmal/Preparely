@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon --watch src --exec node --experimental-specifier-resolution=node src/server.js"
+    "dev": "nodemon --watch src --exec node --experimental-specifier-resolution=node src/server.js",
+    "docker:build": "docker build -t preparely-backend:local ."
   },
   "engines": {
     "node": ">=18"
