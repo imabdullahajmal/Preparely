@@ -7,7 +7,6 @@ RUN npm ci --production
 
 # Copy sources
 COPY src ./src
-COPY .env.example ./
 
 # Final image
 FROM node:18-alpine
